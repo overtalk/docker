@@ -1,3 +1,3 @@
-FROM golang:latest
+FROM alpine:latest
 
 RUN apk add --no-cache rsync openssh
