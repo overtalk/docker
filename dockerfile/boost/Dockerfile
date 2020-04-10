@@ -42,7 +42,7 @@ RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOB
     && ./configure \
     && make \
     && make check \
-    && sudo make install \
+    && make install \
     && ldconfig \
     && cd ..
 
