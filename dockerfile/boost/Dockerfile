@@ -9,8 +9,8 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.15.5/cmake-3.15.5
 
 ENV PATH="/usr/bin/cmake/bin:${PATH}"
 
-ARG BOOST_VERSION=1.72.0
-ARG BOOST_DIR=boost_1_72_0
+ARG BOOST_VERSION=1.67.0
+ARG BOOST_DIR=boost_1_67_0
 ENV BOOST_VERSION ${BOOST_VERSION}
 
 RUN wget http://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/${BOOST_DIR}.tar.bz2 \
@@ -20,6 +20,6 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/$
     && ./b2 --without-python --prefix=/usr -j 4 link=shared runtime-link=shared install \
     && cd .. && rm -rf ${BOOST_DIR} ${BOOST_DIR}.tar.bz2 
 
-RUN apk add build-base
-RUN apk add cmake
-RUN apk add git
+# RUN apk add build-base
+# RUN apk add cmake
+# RUN apk add git
