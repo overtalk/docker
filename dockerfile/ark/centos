@@ -1,6 +1,6 @@
 FROM centos:7
 
-WRORDIR ~/ark
+WORKDIR ~/ark
 
 RUN yum -y install gcc automake autoconf libtool make wget tar
 
