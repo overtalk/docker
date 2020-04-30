@@ -1,1 +1,7 @@
 FROM centos7
+
+WRORDIR ~/ark
+
+yum -y install wget
+
+wget https://github.com/google/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz
