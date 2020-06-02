@@ -3,6 +3,17 @@ FROM alpine:3.10
 RUN apk --update add python
 RUN apk add build-base cmake git openssl linux-headers libexecinfo-dev yasm
 
+
+# install protobuf
+ARG PROTOBUF_VERSION=3.6.1
+ENV PROTOBUF_VERSION ${PROTOBUF_VERSION}
+RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz \
+    && tar -zxvf ./protobuf-all-3.6.1.tar.gz \
+    && cd ./protobuf-3.6.1 \
+    && ./configure \
+    && make install -j4 \
+    && cd .. 
+    
 ARG BOOST_VERSION=1.72.0
 ARG BOOST_DIR=boost_1_72_0
 ENV BOOST_VERSION ${BOOST_VERSION}
@@ -14,19 +25,6 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/1.72.0/boost_1_72_
     && ./bootstrap.sh \
     && ./b2 --without-python --prefix=/usr -j 4 link=shared runtime-link=shared install \
     && cd ..
-
-# install protobuf
-ARG PROTOBUF_VERSION=3.6.1
-ENV PROTOBUF_VERSION ${PROTOBUF_VERSION}
-RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz \
-    && tar -zxvf ./protobuf-all-3.6.1.tar.gz \
-    && cd ./protobuf-3.6.1 \
-    && ./configure \
-    && make \
-    && make check \
-    && make install \
-    && ldconfig \
-    && cd .. 
 
 # install zlib
 RUN wget https://sourceforge.net/projects/libpng/files/zlib/1.2.11/zlib-1.2.11.tar.gz \
