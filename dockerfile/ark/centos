@@ -5,13 +5,13 @@ RUN apk add build-base cmake git openssl linux-headers
 
 # Use bzip2-dev package for Boost IOStreams library support of zip and bzip2 formats
 # Use openssl package for wget ssl_helper issue
-RUN wget http://downloads.sourceforge.net/project/boost/boost/1.72.0/boost_1_72_0.tar.bz2 \
-    && tar --bzip2 -xf boost_1_72_0.tar.bz2 \
-    && cd boost_1_72_0 \
-    && ./bootstrap.sh \
-    && ./b2 --without-python --prefix=/usr -j 4 link=shared runtime-link=shared install \
-    && cd .. \
-    && rm -rf boost_1_72_0 boost_1_72_0.tar.bz2 
+RUN wget http://downloads.sourceforge.net/project/boost/boost/1.72.0/boost_1_72_0.tar.bz2 
+RUN tar --bzip2 -xf boost_1_72_0.tar.bz2 
+RUN cd boost_1_72_0 
+RUN ./bootstrap.sh 
+RUN ./b2 --without-python --prefix=/usr -j 4 link=shared runtime-link=shared install 
+RUN cd .. 
+RUN rm -rf boost_1_72_0 boost_1_72_0.tar.bz2 
 
 # install protobuf
 ARG PROTOBUF_VERSION=3.6.1
