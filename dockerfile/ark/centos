@@ -1,17 +1,19 @@
 FROM alpine:3.6
 
 RUN apk --update add python
-RUN apk add build-base cmake git openssl linux-headers
+RUN apk add build-base cmake git openssl linux-headers libexecinfo-dev yasm
 
+ARG BOOST_VERSION=1.72.0
+ARG BOOST_DIR=boost_1_72_0
+ENV BOOST_VERSION ${BOOST_VERSION}
 # Use bzip2-dev package for Boost IOStreams library support of zip and bzip2 formats
 # Use openssl package for wget ssl_helper issue
-RUN wget http://downloads.sourceforge.net/project/boost/boost/1.72.0/boost_1_72_0.tar.bz2 
-RUN tar --bzip2 -xf boost_1_72_0.tar.bz2 
-RUN cd boost_1_72_0 
-RUN ./bootstrap.sh 
-RUN ./b2 --without-python --prefix=/usr -j 4 link=shared runtime-link=shared install 
-RUN cd .. 
-RUN rm -rf boost_1_72_0 boost_1_72_0.tar.bz2 
+RUN wget http://downloads.sourceforge.net/project/boost/boost/1.72.0/boost_1_72_0.tar.bz2 \
+    && tar --bzip2 -xf boost_1_72_0.tar.bz2 \
+    && cd boost_1_72_0 \
+    && ./bootstrap.sh \
+    && ./b2 --without-python --prefix=/usr -j 4 link=shared runtime-link=shared install \
+    && cd ..
 
 # install protobuf
 ARG PROTOBUF_VERSION=3.6.1
@@ -24,4 +26,21 @@ RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOB
     && make check \
     && make install \
     && ldconfig \
-    && cd .. && rm -rf protobuf-all-${PROTOBUF_VERSION}.tar.gz
+    && cd .. 
+
+# install zlib
+RUN wget https://sourceforge.net/projects/libpng/files/zlib/1.2.8/zlib-1.2.8.tar.gz \
+    && tar -zxvf ./zlib-1.2.8.tar.gz \
+    && cd zlib-1.2.8 \
+    && ./configure \
+    && make \
+    && make check \
+    && make instll \
+    && cd .. \
+
+# install zstd
+RUN wget https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz \
+    && tar -zxvf ./zstd-1.4.4.tar.gz \
+    && cd zstd-1.4.4 \
+    && make install \
+    && cd ..
