@@ -32,7 +32,7 @@ RUN wget https://sourceforge.net/projects/libpng/files/zlib/1.2.11/zlib-1.2.11.t
     && cd zlib-1.2.11 \
     && ./configure \
     && make instll \
-    && cd .. \
+    && cd .. 
 
 # install zstd
 RUN wget https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz \
