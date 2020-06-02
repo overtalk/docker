@@ -1,15 +1,46 @@
-FROM centos:7
+FROM alpine:3.6
 
-WORKDIR ~/ark
+ARG BOOST_VERSION=1.72.0
+ARG BOOST_DIR=boost_1_72_0
+ENV BOOST_VERSION ${BOOST_VERSION}
+# Use bzip2-dev package for Boost IOStreams library support of zip and bzip2 formats
+# Use openssl package for wget ssl_helper issue
+RUN apk add --no-cache --virtual .build-dependencies \
+    openssl \
+    linux-headers \
+    build-base \
+    && wget http://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/${BOOST_DIR}.tar.bz2 \
+    && tar --bzip2 -xf ${BOOST_DIR}.tar.bz2 \
+    && cd ${BOOST_DIR} \
+    && ./bootstrap.sh \
+    && ./b2 --without-python --prefix=/usr -j 4 link=shared runtime-link=shared install \
+    && cd .. && rm -rf ${BOOST_DIR} ${BOOST_DIR}.tar.bz2 \
+    && apk del .build-dependencies
 
-RUN yum -y install gcc automake autoconf libtool make wget tar
+RUN apk add build-base cmake git
 
-RUN wget https://github.com/google/protobuf/releases/download/v3.11.4/protobuf-all-3.11.4.tar.gz
+# install protobuf
+ARG PROTOBUF_VERSION=3.6.1
+ENV PROTOBUF_VERSION ${PROTOBUF_VERSION}
+RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-all-${PROTOBUF_VERSION}.tar.gz \
+    && tar -zxvf ./protobuf-all-${PROTOBUF_VERSION}.tar.gz \
+    && cd ./protobuf-${PROTOBUF_VERSION} \
+    && ./configure \
+    && make \
+    && make check \
+    && make install \
+    && ldconfig \
+    && cd .. && rm -rf protobuf-all-${PROTOBUF_VERSION}.tar.gz
 
-RUN tar zxvf protobuf-all-3.11.4.tar.gz
+# install cmake
+ARG CMAKE_VERSION=3.15.5
+ENV CMAKE_VERSION ${CMAKE_VERSION}
+RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
+    -q -O /tmp/cmake-install.sh \
+    && chmod u+x /tmp/cmake-install.sh \
+    && mkdir /usr/bin/cmake \
+    && /tmp/cmake-install.sh --skip-license --prefix=/usr/bin/cmake \
+    && rm /tmp/cmake-install.sh \
+    && cd ..
 
-RUN cd protobuf-3.11.4
-    && ./autogen.sh
-    && ./configure
-    && make
-    && make install
+ENV PATH="/usr/bin/cmake/bin:${PATH}"
