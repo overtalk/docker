@@ -12,8 +12,7 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/$
     && cd ${BOOST_DIR} \
     && ./bootstrap.sh \
     && ./b2 --without-python --prefix=/usr -j 4 link=shared runtime-link=shared install \
-    && cd .. && rm -rf ${BOOST_DIR} ${BOOST_DIR}.tar.bz2 \
-    && apk del .build-dependencies
+    && cd .. && rm -rf ${BOOST_DIR} ${BOOST_DIR}.tar.bz2 
 
 # install protobuf
 ARG PROTOBUF_VERSION=3.6.1
