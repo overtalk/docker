@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.10
 
 RUN apk --update add python
 RUN apk add build-base cmake git openssl linux-headers libexecinfo-dev yasm
