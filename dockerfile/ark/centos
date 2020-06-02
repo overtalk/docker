@@ -31,7 +31,7 @@ RUN wget https://sourceforge.net/projects/libpng/files/zlib/1.2.11/zlib-1.2.11.t
     && tar -zxvf ./zlib-1.2.11.tar.gz \
     && cd zlib-1.2.11 \
     && ./configure \
-    && make instll \
+    && make install \
     && cd .. 
 
 # install zstd
