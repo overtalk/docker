@@ -3,7 +3,7 @@ FROM ubuntu:18.04
 WORKDIR /root
 
 RUN apt update && \
-    apt install -y build-essential wget
+    apt install -y gcc make wget
 
 # install protobuf && boost && zlib && zstd
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz \
@@ -33,7 +33,7 @@ RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/pr
     && make install \
     && cd .. \
     && rm -rf ./zstd-1.4.4.tar.gz ./zstd-1.4.4 \
-    && wget https://github.com/Kitware/CMake/releases/download/v3.17.3/cmake-3.17.3.tar.gz && \
+    && wget https://github.com/Kitware/CMake/releases/download/v3.17.3/cmake-3.17.3.tar.gz \
     && tar -zxvf ./cmake-3.17.3.tar.gz \
     && cd cmake-3.17.3 \
     && make install -j4 \
