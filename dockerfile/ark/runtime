@@ -1,8 +1,10 @@
   FROM ubuntu:18.04
   
-  RUN apt update && \
-    apt install -y build-essential wget && \
-    apt clean
+  RUN apt-get update \
+    && apt-get install -y build-essential wget \
+    && apt-get clean \
+    && apt-get autoclean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
     
   RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz \
     && tar -zxf ./protobuf-all-3.6.1.tar.gz \
