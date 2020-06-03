@@ -3,9 +3,8 @@ FROM ubuntu:18.04
 WORKDIR /root
 
 RUN apt update && \
-    apt install -y gcc make wget
+    apt install -y build-essential wget
 
-# install protobuf && boost && zlib && zstd
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz \
     && tar -zxvf ./protobuf-all-3.6.1.tar.gz \
     && cd ./protobuf-3.6.1 \
