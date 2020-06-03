@@ -2,35 +2,29 @@ FROM alpine:3.10
 
 RUN apk  --update add python build-base cmake git openssl linux-headers libexecinfo-dev yasm
 
-# install protobuf
+# install protobuf && boost && zlib && zstd
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz \
     && tar -zxvf ./protobuf-all-3.6.1.tar.gz \
     && cd ./protobuf-3.6.1 \
     && ./configure \
     && make install -j4 \
     && cd .. \
-    && rm -rf ./protobuf-all-3.6.1.tar.gz ./protobuf-3.6.1
-    
-# install boost
-RUN wget http://downloads.sourceforge.net/project/boost/boost/1.72.0/boost_1_72_0.tar.bz2 \
+    && rm -rf ./protobuf-all-3.6.1.tar.gz ./protobuf-3.6.1 \
+    && wget http://downloads.sourceforge.net/project/boost/boost/1.72.0/boost_1_72_0.tar.bz2 \
     && tar --bzip2 -xf boost_1_72_0.tar.bz2 \
     && cd boost_1_72_0 \
     && ./bootstrap.sh \
     && ./b2 --without-python --prefix=/usr -j 4 link=shared runtime-link=shared install \
     && cd .. \
-    && rm -rf ./boost_1_72_0.tar.bz2 ./boost_1_72_0
-
-# install zlib
-RUN wget https://sourceforge.net/projects/libpng/files/zlib/1.2.11/zlib-1.2.11.tar.gz \
+    && rm -rf ./boost_1_72_0.tar.bz2 ./boost_1_72_0 \
+    && wget https://sourceforge.net/projects/libpng/files/zlib/1.2.11/zlib-1.2.11.tar.gz \
     && tar -zxvf ./zlib-1.2.11.tar.gz \
     && cd zlib-1.2.11 \
     && ./configure \
     && make install \
     && cd .. \
-    && rm -rf ./zlib-1.2.11.tar.gz ./zlib-1.2.11
-
-# install zstd
-RUN wget https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz \
+    && rm -rf ./zlib-1.2.11.tar.gz ./zlib-1.2.11 \
+    && wget https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz \
     && tar -zxvf ./zstd-1.4.4.tar.gz \
     && cd zstd-1.4.4 \
     && make install \
