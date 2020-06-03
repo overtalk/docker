@@ -1,0 +1,4 @@
+FROM alpine:latest
+
+RUN apk update && \
+    apk add boost-dev protobuf-dev zstd-dev zlib-dev gcc g++ make cmake libexecinfo-dev
