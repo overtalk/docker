@@ -6,7 +6,7 @@ RUN apt update && \
     apt install -y build-essential wget
 
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz \
-    && tar -zxvf ./protobuf-all-3.6.1.tar.gz \
+    && tar -zxf ./protobuf-all-3.6.1.tar.gz \
     && cd ./protobuf-3.6.1 \
     && ./configure \
     && make install -j4 \
@@ -20,7 +20,7 @@ RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/pr
     && cd .. \
     && rm -rf ./boost_1_72_0.tar.bz2 ./boost_1_72_0 \
     && wget https://sourceforge.net/projects/libpng/files/zlib/1.2.11/zlib-1.2.11.tar.gz \
-    && tar -zxvf ./zlib-1.2.11.tar.gz \
+    && tar -zxf ./zlib-1.2.11.tar.gz \
     && cd zlib-1.2.11 \
     && ./configure \
     && make install \
@@ -33,8 +33,9 @@ RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/pr
     && cd .. \
     && rm -rf ./zstd-1.4.4.tar.gz ./zstd-1.4.4 \
     && wget https://github.com/Kitware/CMake/releases/download/v3.17.3/cmake-3.17.3.tar.gz \
-    && tar -zxvf ./cmake-3.17.3.tar.gz \
+    && tar -zxf ./cmake-3.17.3.tar.gz \
     && cd cmake-3.17.3 \
+    && ./bootstrap \
     && make install -j4 \
     && cd .. \
     && rm -rf ./cmake-3.17.3.tar.gz ./cmake-3.17.3 
